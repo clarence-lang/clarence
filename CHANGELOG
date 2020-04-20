@@ -1,0 +1,17 @@
+v0.2.3:
+
+  Self-host vm
+  new grammar syntax --see samples directory
+  added browser dom interop
+  added new builtins such prn and console.log
+  removed println for better and faster compilation
+  added interacive REPL
+  added npm module --globally
+  
+TODO:
+
+  Rewrite cclarence compiler
+  Rewrite mongoDB plugin
+  Rewrite samples
+  Add benchmarks
+  
