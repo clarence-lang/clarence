@@ -1,0 +1,40 @@
+{
+  "name": "clar",
+  "version": "0.2.2",
+  "description": "A functional, imperative programming language. Clarence feaures an automatic memory storage, dynamic typing and much much more...",
+  "keywords": [
+    "javascript",
+    "language",
+    "lisp",
+    "compiler"
+  ],
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "directories": {
+    "lib": "./lib/clar"
+  },
+  "main": "./lib/clar/clar",
+  "bin": {
+    "clar": "./bin/clar"
+  },
+  "scripts": {
+    "test": "./bin/build && ./bin/build",
+    "reset": "./bin/build -r",
+    "build": "./bin/build -s"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/clarence-lang/clarence.git"
+  },
+  "homepage": "http://clarence-lang.github.io",
+  "author": "timo-cmd",
+  "license": "MIT",
+  "dependencies": {
+    "mkdirp": "latest",
+    "js-beautify": "latest"
+  },
+  "devDependencies": {
+    "yargs": "latest"
+  }
+}

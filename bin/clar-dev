@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// dev
+require('../dev/clar/command').run();
