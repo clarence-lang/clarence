@@ -14,7 +14,7 @@ Clarence features a fast dynamic bytecode compilation. Similar to Just in Time c
 
 > Note: This is the version 0.2.3. All lower versions will not be support. This is the current one. See <a href="">changelog</a> to see what has changed since the Last update.
 
-Sounds great? So take a look in the <a href="https://github.com/clarence-lang/clarence/tree/master/samples">samples</a> directory or get even an Installer for Clarence!
+Sounds great? So take a look in the <a href="https://github.com/clarence-lang/clarence/tree/clarence-v.0.2.0/samples">samples</a> directory or get even an Installer for Clarence!
 
 ## Install
 
@@ -76,7 +76,7 @@ Type some Clarence expressions:
 ::>
 ```
 
-You can type some code (see <a href="">samples</a>) in the REPL.
+You can type some code (see <a href="https://github.com/clarence-lang/clarence/tree/clarence-v.0.2.0/samples">samples</a>) in the REPL.
 
 ---
 
