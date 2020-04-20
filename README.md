@@ -3,76 +3,58 @@
     <br>
     </br>
     C L A R E N C E - L A N G</p></a>
-    <br>
-	<br>
-	<hr>
-	<p>
-		<p>
-			<sup>
-				<a href="https://github.com/clarence-lang">My open source work is supported by the community</a>
-			</sup>
-		</p>
-		<sup>Special thanks to:</sup>
-		<br>
-		<br>
-		<a href="https://github.com/botpress/botpress">
-			<img src="https://sindresorhus.com/assets/thanks/botpress-logo.svg" width="260" alt="Botpress">
-		</a>
-		<br>
-		<sub><b>Botpress is an open-source conversational assistant creation platform.</b></sub>
-		<br>
-		<sub>They <a href="https://github.com/botpress/botpress/blob/master/.github/CONTRIBUTING.md">welcome contributions</a> from anyone, whether you're into machine learning,<br>want to get started in open-source, or just have an improvement idea.</sub>
-		<br>
-		<hr>
+    <br>	
+    <hr>
  </div>
 
 
-Clarence is a dynamic, embeddable scripting-language. It's syntax are highly inspired by Clojure. However, it features aweful new modifications on it's vm. With Clarence, you're allowed to write code, that even writes code for you! The entire core (vm, parser, interpreter, bytecode) is pretty small. It was implemented using artesian ECMAscript 16 (JavaScript). 
+Clarence is a dynamic, embeddable scripting-language. It's syntax are highly inspired by Clojure. However, it features aweful new modifications on it's vm. With Clarence, you're allowed to write code, that even writes code for you! The entire core (vm, parser, interpreter, bytecode) is pretty small, you could implement it in nearly a weekend! It was implemented using Clarence itselfe (self-host). 
 
 Clarence features a fast dynamic bytecode compilation. Similar to Just in Time compilations. You can use it for scientific computations, embeds of large projects and much much more... It's vm is written in Clarence itselfes so it got self-hosted. That's quite nice, cause while compilation, you are allowed to get some parallel compilations using macros! 
 
-## Projects that use Clarence
----
+> Note: This is the version 0.2.3. All lower versions will not be support. This is the current one.
 
-<a href="https://github.com/clarence-lang/http-clar">clar-http       | A server sample for Clarence</a>
-
-<a href="https://github.com/clarence-lang/cclarence">cclarence       | A stable C to Clarence compiler WIP</a>
-
-<a href="https://github.com/clarence-lang/clar-mongoDB">clar-mongoDB | A mongoDB plugin for Clarence</a>
-
-<a href="https://github.com/clarence-lang/clr-stdlib">clar-stdlib    | The stdlib of Clarence WIP</a>
-
-Your's not there? File an Issue or a PR to add your project in clarence.
-
-
-Sounds great? So take a look in the <a href="https://github.com/clarence-lang/clarence/tree/master/samples/simple">samples</a> directory or get even an Installer for Clarence!
+Sounds great? So take a look in the <a href="https://github.com/clarence-lang/clarence/tree/master/samples">samples</a> directory or get even an Installer for Clarence!
 
 ## Install
 ---
 
-As already said, Clarence is implemented in JS so install it's module from NPM:
+Clarence is built on top of JavaScript but compiled by itselfe so you just need to install it's module from NPM. Use this shell script by pasting it in a native shell like: cmd.exe, terminal, powershell...
 
+> Note: We've setted the --global flag so we can call the clarence REPL from nearly everywhere. 
 
 ```bash
-$ git clone https://github.com/clarence-lang/clarence.git
-$ cd clarence
-$ npm install clar
+$ npm install -g clar
+
+Result:
+
++ clar@0.2.3
+added 29 packages from 22 contributors in 4.227s
 ```
 
-Done!
+Done!  Everything is installed and you are now good to go!
 
-## Running programs
 ---
 
-You can run your programs like this:
+## Getting started
 
-Note: this is an executed example using the samples\simple directory!
+You can get started by calling it's help using this command:
 
 ```javascript
-cd simple
-node run <yourFile.clr>
-# or do that:
-node run hello.clr
+$ clar --help
+```
+
+And it will appear like this:
+
+```javascript
+Usage: clar [options] path/to/script.clar -- [args]
+When called without options, compiles your script and prints the output to stdout.")
+List of valid options
+
+  -c --compile       compile to JavaScript and save as .js files
+  -o --output [dir]  set the output directory for compiled JavaScript
+  -i --interactive   run an interactive clarence REPL (this is the default with no options and arguments)")
+  -v --version       display the version number")
 ```
 
 ## Style
