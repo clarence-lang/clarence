@@ -1,5 +1,5 @@
 <div align="center">
-    <p><a href="http://clarence-lang.github.io"><img src="https://raw.githubusercontent.com/clarence-lang/assets/master/clary.jpg" height=" 230"></img>
+    <p><a href="http://clarence-lang.github.io">
     <br>
     </br>
     C L A R E N C E - L A N G</p></a>
@@ -12,7 +12,7 @@ Clarence is a dynamic, embeddable scripting-language. It's syntax are highly ins
 
 Clarence features a fast dynamic bytecode compilation. Similar to Just in Time compilations. You can use it for scientific computations, embeds of large projects and much much more... It's vm is written in Clarence itselfes so it got self-hosted. That's quite nice, cause while compilation, you are allowed to get some parallel compilations using macros! 
 
-> Note: This is the version 0.2.3. All lower versions will not be support. This is the current one.
+> Note: This is the version 0.2.3. All lower versions will not be support. This is the current one. See <a href="">changelog</a> to see what has changed since the Last update.
 
 Sounds great? So take a look in the <a href="https://github.com/clarence-lang/clarence/tree/master/samples">samples</a> directory or get even an Installer for Clarence!
 
