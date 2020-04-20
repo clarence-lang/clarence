@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> Clojure demo</title>
+<style>
+@font-face {
+    font-family: 'FiraCode';
+    src: url('https://viebel.github.io/klipse/fonts/FiraCode/woff2/FiraCode-Regular.woff2') format('webfont.woff2') , /* Super Modern Browsers */
+    url('https://viebel.github.io/klipse/fonts/FiraCode/woff/FiraCode-Regular.woff') format('woff'), /* Pretty Modern Browsers */
+    url('https://viebel.github.io/klipse/fonts/FiraCode/ttf/FiraCode-Regular.ttf')  format('truetype') /* Safari, Android, iOS */;
+}
+
+/* BASICS */
+
+.CodeMirror {
+  /* Set height, width, borders, and global font properties here */
+  font-family: consolas, fantasy;
+  height: 100%;
+  color: black;
+  border: solid 1px gray;
+}
+
+/* PADDING */
+
+.CodeMirror-lines {
+  padding: 4px 0; /* Vertical padding around content */
+}
+.CodeMirror pre {
+  padding: 0 4px; /* Horizontal padding of content */
+}
+
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+  background-color: white; /* The little square between H and V scrollbars */
+}
+
+/* GUTTER */
+
+.CodeMirror-gutters {
+  border-right: 1px solid #ddd;
+  background-color: #f7f7f7;
+  white-space: nowrap;
+}
+.CodeMirror-linenumbers {}
+.CodeMirror-linenumber {
+  padding: 0 3px 0 5px;
+  min-width: 20px;
+  text-align: right;
+  color: black;
+  white-space: nowrap;
+}
+
+.CodeMirror-guttermarker { color: black; }
+.CodeMirror-guttermarker-subtle { color: #999; }
+
+/* CURSOR */
+
+.CodeMirror-cursor {
+  border-left: 1px solid black;
+  border-right: none;
+  width: 0;
+}
+/* Shown when moving in bi-directional text */
+.CodeMirror div.CodeMirror-secondarycursor {
+  border-left: 1px solid silver;
+}
+.cm-fat-cursor .CodeMirror-cursor {
+  width: auto;
+  border: 0;
+  background: #7e7;
+}
+.cm-fat-cursor div.CodeMirror-cursors {
+  z-index: 1;
+}
+
+.cm-animate-fat-cursor {
+  width: auto;
+  border: 0;
+  -webkit-animation: blink 1.06s steps(1) infinite;
+  -moz-animation: blink 1.06s steps(1) infinite;
+  animation: blink 1.06s steps(1) infinite;
+  background-color: #7e7;
+}
+@-moz-keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+@-webkit-keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+@keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+
+/* Can style cursor different in overwrite (non-insert) mode */
+.CodeMirror-overwrite .CodeMirror-cursor {}
+
+.cm-tab { display: inline-block; text-decoration: inherit; }
+
+.CodeMirror-ruler {
+  border-left: 1px solid #ccc;
+  position: absolute;
+}
+
+/* DEFAULT THEME */
+
+.cm-s-default .cm-header {color: hsl( 95, 38%, 62%);}
+.cm-s-default .cm-quote {color: hsl( 95, 38%, 62%);}
+.cm-negative {color: #d44;}
+.cm-positive {color: #292;}
+.cm-header, .cm-strong {font-weight: bold;}
+.cm-em {font-style: italic;}
+.cm-link {text-decoration: underline;}
+.cm-strikethrough {text-decoration: line-through;}
+
+.cm-s-default .cm-keyword {color:  hsl(286, 60%, 67%); font-style: italic;}
+.cm-s-default .cm-atom {color: #219;}
+.cm-s-default .cm-number {color: hsl( 39, 67%, 69%);}
+.cm-s-default .cm-def {color: hsl( 39, 67%, 69%);}
+.cm-s-default .cm-variable,
+.cm-s-default .cm-punctuation,
+.cm-s-default .cm-property,
+.cm-s-default .cm-operator {color: black}
+.cm-s-default .cm-variable-2 {color: #05a;}
+.cm-s-default .cm-variable-3 {color: #085;}
+.cm-s-default .cm-comment {color: gray; font-style: italic;}
+.cm-s-default .cm-string {color: hsl( 95, 38%, 62%);}
+.cm-s-default .cm-string-2 {color: kkk;}
+.cm-s-default .cm-meta {color: #555;}
+.cm-s-default .cm-qualifier {color: ;}
+.cm-s-default .cm-builtin {color: hsl(207, 82%, 66%);}
+.cm-s-default .cm-bracket {color: black;}
+.cm-s-default .cm-tag {color: green;}
+.cm-s-default .cm-attribute {color: #00c;}
+.cm-s-default .cm-hr {color: ;}
+.cm-s-default .cm-link {color: hsl( 95, 38%, 62%);}
+
+.cm-s-default .cm-error {color: black;}
+.cm-invalidchar {color: #f00;}
+
+.CodeMirror-composing { border-bottom: 2px solid; }
+
+/* Default styles for common addons */
+
+div.CodeMirror span.CodeMirror-matchingbracket {color: black;}
+div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
+.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }
+.CodeMirror-activeline-background {background: #e8f2ff;}
+
+/* STOP */
+
+/* The rest of this file contains styles related to the mechanics of
+   the editor. You probably shouldn't touch them. */
+
+.CodeMirror {
+  position: relative;
+  overflow: hidden;
+  background: white;
+}
+
+.CodeMirror-scroll {
+  overflow: scroll !important; /* Things will break if this is overridden */
+  /* 30px is the magic margin used to hide the element's real scrollbars */
+  /* See overflow: hidden in .CodeMirror */
+  margin-bottom: -30px; margin-right: -30px;
+  padding-bottom: 30px;
+  height: 100%;
+  outline: none; /* Prevent dragging from highlighting the element */
+  position: relative;
+}
+.CodeMirror-sizer {
+  position: relative;
+  border-right: 30px solid transparent;
+}
+
+/* The fake, visible scrollbars. Used to force redraw during scrolling
+   before actual scrolling happens, thus preventing shaking and
+   flickering artifacts. */
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+  position: absolute;
+  z-index: 6;
+  display: none;
+}
+.CodeMirror-vscrollbar {
+  right: 0; top: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.CodeMirror-hscrollbar {
+  bottom: 0; left: 0;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+.CodeMirror-scrollbar-filler {
+  right: 0; bottom: 0;
+}
+.CodeMirror-gutter-filler {
+  left: 0; bottom: 0;
+}
+
+.CodeMirror-gutters {
+  position: absolute; left: 0; top: 0;
+  z-index: 3;
+}
+.CodeMirror-gutter {
+  white-space: normal;
+  height: 100%;
+  display: inline-block;
+  margin-bottom: -30px;
+  /* Hack to make IE7 behave */
+  *zoom:1;
+  *display:inline;
+}
+.CodeMirror-gutter-wrapper {
+  position: absolute;
+  z-index: 4;
+  background: none !important;
+  border: none !important;
+}
+.CodeMirror-gutter-background {
+  position: absolute;
+  top: 0; bottom: 0;
+  z-index: 4;
+}
+.CodeMirror-gutter-elt {
+  position: absolute;
+  cursor: default;
+  z-index: 4;
+}
+.CodeMirror-gutter-wrapper {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.CodeMirror-lines {
+  cursor: text;
+  min-height: 1px; /* prevents collapsing before first draw */
+}
+.CodeMirror pre {
+  /* Reset some styles that the rest of the page might have set */
+  -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;
+  border-width: 0;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+  white-space: pre;
+  word-wrap: normal;
+  line-height: inherit;
+  color: inherit;
+  z-index: 2;
+  position: relative;
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+}
+.CodeMirror-wrap pre {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: normal;
+}
+
+.CodeMirror-linebackground {
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  z-index: 0;
+}
+
+.CodeMirror-linewidget {
+  position: relative;
+  z-index: 2;
+  overflow: auto;
+}
+
+.CodeMirror-widget {}
+
+.CodeMirror-code {
+  outline: none;
+}
+
+/* Force content-box sizing for the elements where we expect it */
+.CodeMirror-scroll,
+.CodeMirror-sizer,
+.CodeMirror-gutter,
+.CodeMirror-gutters,
+.CodeMirror-linenumber {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.CodeMirror-measure {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.CodeMirror-cursor { position: absolute; }
+.CodeMirror-measure pre { position: static; }
+
+div.CodeMirror-cursors {
+  visibility: hidden;
+  position: relative;
+  z-index: 3;
+}
+div.CodeMirror-dragcursors {
+  visibility: visible;
+}
+
+.CodeMirror-focused div.CodeMirror-cursors {
+  visibility: visible;
+}
+
+.CodeMirror-selected { background: #d9d9d9; }
+.CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }
+.CodeMirror-crosshair { cursor: crosshair; }
+.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }
+.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }
+
+.cm-searching {
+  background: #ffa;
+  background: rgba(255, 255, 0, .4);
+}
+
+/* IE7 hack to prevent it from returning funny offsetTops on the spans */
+.CodeMirror span { *vertical-align: text-bottom; }
+
+/* Used to force a border model for a node */
+.cm-force-border { padding-right: .1px; }
+
+@media print {
+  /* Hide the cursor when printing */
+  .CodeMirror div.CodeMirror-cursors {
+    visibility: hidden;
+  }
+}
+
+/* See issue #2901 */
+.cm-tab-wrap-hack:after { content: ''; }
+
+/* Help users use markselection to safely style text background */
+span.CodeMirror-selectedtext { background: none; }
+
+/* rules for autocompletio add on */
+.CodeMirror-hints {
+  position: absolute;
+  z-index: 10;
+  overflow: hidden;
+  list-style: none;
+
+  margin: 0;
+  padding: 2px;
+
+  -webkit-box-shadow: 2px 3px 5px rgba(0,0,0,.2);
+  -moz-box-shadow: 2px 3px 5px rgba(0,0,0,.2);
+  box-shadow: 2px 3px 5px rgba(0,0,0,.2);
+  border-radius: 3px;
+  border: 1px solid silver;
+
+  background: white;
+  font-size: 90%;
+  font-family: monospace;
+
+  max-height: 20em;
+  overflow-y: auto;
+}
+
+.CodeMirror-hint {
+  margin: 0;
+  padding: 0 4px;
+  border-radius: 2px;
+  white-space: pre;
+  color: black;
+  cursor: pointer;
+}
+
+li.CodeMirror-hint-active {
+  background: #08f;
+  color: white;
+}
+/* rules for autocompletio add on */
+/*source: https://github.com/watert/bootstrap.light*/
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}
+body{line-height:1;}
+ol,ul{list-style:none;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
+table{border-collapse:collapse;border-spacing:0;}
+.clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0;}
+.clearfix:after{clear:both;}si
+.lead{font-size:28px;}
+.container{width:940px;display:block;margin:auto;}
+.row{margin-left:-20px;*zoom:1;}.row:before,.row:after{display:table;content:"";line-height:0;}
+.row:after{clear:both;}
+[class*="span"]{float:left;min-height:1px;margin-left:20px;}
+.span12{width:940px;}
+.span11{width:860px;}
+.span10{width:780px;}
+.span9{width:700px;}
+.span8{width:620px;}
+.span7{width:540px;}
+.span6{width:460px;}
+.span5{width:380px;}
+.span4{width:300px;}
+.span3{width:220px;}
+.span2{width:140px;}
+.span1{width:60px;}
+body{line-height:1.35em;font-size:1.4em;}
+
+h1,h2,h3,h4,h5,h6,legend{margin-bottom:0.3em;font-weight:bold;line-height:2em;opacity:0.85;}
+h1{font-size:52px;line-height:1.2em;margin:26px 0 13px;}
+h2{font-size:36.4px;}
+h3{font-size:26px;}
+h4{font-size:18.2px;}
+p,address{margin:13px 0 13px;}
+strong,b{font-weight:bold;}
+a{color:#0099ff;}
+.page-header{margin-top:78px;margin-bottom:26px;border-bottom:1px solid #EEE;}
+.lead{font-size:26px;}
+.well{padding:20px;background:#F7F7F7;border-radius:5px;}
+.well-small{padding:5px;}
+hr{margin:18.2px 0;border:0;border-top:1px solid #eee;border-bottom:1px solid #fff;}
+blockquote{padding:0 0 0 13px;margin:0 0 18.2px;border-left:5px solid #f5f5f5;}blockquote p{font-size:18.2px;}
+code,pre{font-family:'Monaco','Menlo','Ubuntu Mono','Consolas','source-code-pro',monospace;padding:2px 4px;background-color:#EEE;color:#333;border-radius:2px;}
+form{margin-bottom:26px;}
+input,textarea{width:200px;padding:5px;border-radius:3px;border:1px solid #DDD;border-color:#DDD #DDD #CCC;}
+input[type="file"],input[type="image"],input[type="submit"],input[type="reset"],input[type="button"],input[type="radio"],input[type="checkbox"]{width:auto;}
+legend{width:100%;font-size:26px;border-bottom:1px solid #D7D7D7;display:block;margin-bottom:36.4px;}
+.form-horizontal input{margin-bottom:0;vertical-align:middle;}
+.form-horizontal .control-group{margin:6.5px 0 26px;}
+.form-horizontal .control-label{float:left;width:160px;text-align:right;}
+.form-horizontal .form-actions{border-top:1px solid rgba(0, 0, 0, 0.1);margin-top:52px;padding:13px 0;padding-left:180px;}
+.form-horizontal .controls{margin-left:180px;}.form-horizontal .controls input{margin-top:-4px;}
+table{max-width:100%;background-color:transparent;border-collapse:collapse;border-spacing:0;}
+.table-bordered{border-radius:4px;}.table-bordered td,.table-bordered th{border:1px solid #DDD;}
+.table{margin-bottom:26px;width:100%;}.table th{font-weight:bold;color:#444;}
+.table th,.table td{padding:8px;line-height:20px;text-align:left;vertical-align:top;border-top:1px solid #ddd;}
+.btn{background:#f5f5f5;color:#FFF;color:#555;cursor:pointer;display:inline-block;padding:6px 8px;text-decoration:none;font-weight:bold;border:1px solid #DDD;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);border-radius:3px;box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.2),0 1px 2px rgba(0, 0, 0, 0.05);}.btn:hover{background:#e1e1e1;}
+.btn.btn-primary{background:#137fec;color:#FFF;}.btn.btn-primary:hover{background:#106bc6;}
+.btn.btn-info{background:#5bc0de;color:#FFF;}.btn.btn-info:hover{background:#39b3d7;}
+.btn.btn-success{background:#3d9400;color:#FFF;}.btn.btn-success:hover{background:#2c6b00;}
+.btn.btn-warning{background:#f3b700;color:#FFF;}.btn.btn-warning:hover{background:#ca9900;}
+.btn.btn-danger{background:#d9230f;color:#FFF;}.btn.btn-danger:hover{background:#b31d0c;}
+.btn.btn-inverse{background:#333333;color:#FFF;}.btn.btn-inverse:hover{background:#1f1f1f;}
+.btn.btn-large{padding:12px 18px;}
+.btn.btn-small{padding:2px 5px;}
+.btn.disabled{opacity:0.5;cursur:default;}
+.btn-group{position:relative;display:inline-block;font-size:0;white-space:nowrap;vertical-align:middle;padding:1px 0;}.btn-group .btn{border-radius:0;font-size:13px;margin-left:-1px;}.btn-group .btn:first-child{border-radius:2px 0 0 2px;}
+.btn-group .btn:last-child{border-radius:0 2px 2px 0;}
+.caret{display:none;}
+li.active,li.active>a{color:#888;}
+li.active a:hover{text-decoration:underline;}
+.breadcrumb,.pagination,.pager,.navbar,.nav-tabs,.nav-pills{*zoom:1;margin-bottom:13px;}.breadcrumb:before,.pagination:before,.pager:before,.navbar:before,.nav-tabs:before,.nav-pills:before,.breadcrumb:after,.pagination:after,.pager:after,.navbar:after,.nav-tabs:after,.nav-pills:after{display:table;content:"";line-height:0;}
+.breadcrumb:after,.pagination:after,.pager:after,.navbar:after,.nav-tabs:after,.nav-pills:after{clear:both;}
+.breadcrumb a,.pagination a,.pager a,.navbar a,.nav-tabs a,.nav-pills a,.breadcrumb li.active,.pagination li.active,.pager li.active,.navbar li.active,.nav-tabs li.active,.nav-pills li.active{padding:6.5px 10.4px;display:inline-block;text-decoration:none;}
+.breadcrumb li,.pagination li,.pager li,.navbar li,.nav-tabs li,.nav-pills li{float:left;display:inline-block;}.breadcrumb li.active a,.pagination li.active a,.pager li.active a,.navbar li.active a,.nav-tabs li.active a,.nav-pills li.active a{padding:0;display:inline;border:none;}
+.breadcrumb li,.breadcrumb li.active,.breadcrumb li a{border:none;}
+.pagination,.pager{padding-left:1px;}.pagination li,.pager li{border:1px solid #DDD;margin-left:-1px;}
+.nav-tabs{border-bottom:1px solid #DDD;}.nav-tabs>li.active{background:#FFF;border:1px solid #DDD;border-bottom-width:0;}
+.nav-tabs li{margin-bottom:-1px;}.nav-tabs li:hover{background:#F7F7F7;}
+.nav-list .nav-header{opacity:0.4;font-weight:bold;color:black;}
+.nav-list li+.nav-header{margin-top:1em;}
+.nav-list .nav-header,.nav-list li>a{display:block;padding:0.4em 0.5em;text-decoration:none;}
+.nav-list li>a:hover{color:#007acc;}
+.nav-list .active>a{background:#0099ff;color:#FFF;}.nav-list .active>a:hover{color:#FFF;text-decoration:none;}
+.nav-pills li.active{padding:0;}.nav-pills li.active a{color:#FFF;background:#0099ff;}
+.nav-pills a:hover{background:#EEE;}
+.nav-pills a,.nav-pills li.active a{display:inline-block;margin-right:5px;margin-bottom:5px;padding:6.5px 10.4px;border-radius:5px;}
+.dropdown-menu{display:none;}
+.label{border-radius:3px;padding:1.95px 6.5px;font-size:11.049999999999999px;}
+.badge{border-radius:10px;padding:1.95px 13px;}
+.label,.badge{background:#999;color:#FFF;display:inline-block;font-weight:bold;}
+.label-success,.badge-success{background:#3d9400;}
+.label-warning,.badge-warning{background:#f3b700;}
+.label-important,.badge-important{background:#d9230f;}
+.label-info,.badge-info{background:#5bc0de;}
+.label-inverse,.badge-inverse{background:#333333;}
+.close{float:right;font-size:1.5em;color:#888;cursor:pointer;}.close:hover{color:#444;}
+.alert{background:#fff0c0;color:rgba(0, 0, 0, 0.7);position:relative;padding:0.6em 2.5em 0.6em 1em;margin-bottom:13px;border-radius:4px;}.alert h2,.alert h3,.alert h4,.alert h5,.alert h6{margin:0;}
+.alert .close{position:relative;top:-2px;right:-21px;}
+.alert-error{background:#fcd6d2;}
+.alert-info{background:#daf1f8;}
+.alert-success{background:#d1f3ba;}
+@media (max-width:767px){body{padding:0 10px;} .row{margin:0;} .container{width:auto;} [class*="span"],.row-fluid{display:block;float:none;width:100%;margin-left:0;box-sizing:border-box;} .form-horizontal .control-label{float:none;display:block;text-align:left;margin-bottom:0.5em;} .form-horizontal .controls{margin-left:0;}}.pull-left{float:left;}
+.pull-right{float:right;}
+.hidden {display:none;}
+pre {
+   margin-top: 10px;
+   margin-bottom: 30px;
+}
+
+</style>
+
+</head>
+
+<body class="container">
+
+<h1> Clojure demo</h1>
+
+
+
+
+
+
+<pre><code class="clojure">
+(ns my.first-ns
+  (:require
+    [clojure.string :as string]))
+
+(string/capitalize "klipse")
+</code></pre>
+
+
+
+<pre><code class="clojure">
+(ns my.ns
+  (:require
+      [clojure.set :refer [union intersection] :rename {union UNION}]))
+
+  [(intersection #{1 2 3} #{2 3 4})
+   (UNION #{1 2 3} #{2 3 4 5})]
+</code></pre>
+
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<script>
+    window.klipse_settings = {
+       selector: '.clojure'
+    };
+</script>
+
+
+
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js">
+</script>
+</body>
+
+</html>
