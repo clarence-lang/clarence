@@ -17,7 +17,6 @@ Clarence features a fast dynamic bytecode compilation. Similar to Just in Time c
 Sounds great? So take a look in the <a href="https://github.com/clarence-lang/clarence/tree/master/samples">samples</a> directory or get even an Installer for Clarence!
 
 ## Install
----
 
 Clarence is built on top of JavaScript but compiled by itselfe so you just need to install it's module from NPM. Use this shell script by pasting it in a native shell like: cmd.exe, terminal, powershell...
 
@@ -34,7 +33,6 @@ added 29 packages from 22 contributors in 4.227s
 
 Done!  Everything is installed and you are now good to go!
 
----
 
 ## Getting started
 
@@ -57,41 +55,52 @@ List of valid options
   -v --version       display the version number")
 ```
 
-## Style
+## Executables
 ---
 
-Sample stylish clarence apps:
-
-```clojure
-(ns web.server)
-
-(def http (js/require "http"))
-
-(defn handler [request]
-    { :status 200
-        :headers { "Content-type" "text/html" }
-        :body "Hello, World!" })
-        
-(defn process [req res handler]
-    (let [response (handler req)
-          status (get response :status 200)
-          headers (get response :headers {"Content-type" "text/html"})
-          body (get response :body "")]
-
-        (.writeHead res (status (to-object headers)))
-        (.end res (body))))
-        
-(defn run [handler port]
-    (.listen (.createServer http ((fn [req res] (process req res handler)))) (port))
-    (println "Server listening at port " port))
+By passing different flags to <clar> you are able to call different environments. See below:
     
-(run handler 3000)
+### The REPL:
+
+> Named: Read Eval Print Loop. A REPL is called when no argument is passed:
+
+```bash
+$ clar
+
+Result: 
+
+Clarence 0.2.3-5b6b9f1 (C) Timo S.
+Version 0.2.3 (2020-04-20) Clar
+Type some Clarence expressions:
+
+::>
 ```
 
-It's a simple webserver using a http module that is parsed to clarence. It will run on http://localhost:3000
+You can type some code (see <a href="">samples</a>) in the REPL.
 
 ---
 
+### Loading scripts
+
+> Note: You can load external scripts that are stored in plain/clar files. eg: <file.clar>
+
+Or you can load them directly in a native shell:
+
+```bash
+$ clar <PATH/TO/yourfile.clar>
+```
+
+eg.:
+
+```bash
+$ clar hello.clar
+
+Result:
+String: Hello, World!
+undefined
+```
+
+---
 
 Made by Timo Sarkar 
 
