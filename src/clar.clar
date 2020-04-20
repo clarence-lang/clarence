@@ -1002,7 +1002,7 @@
     (throw Error (+ "unexpected form: " (pr form))))
   form))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Functions Import ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ; Functions store
 (= functions (:))
