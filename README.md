@@ -1,5 +1,5 @@
 <div align="center">
-    <p><a href="http://clarence-lang.github.io">
+    <p><a href="http://clarence-lang.github.io">λ - Clarence
     <br>
     </br>
     C L A R E N C E - L A N G</p></a>
