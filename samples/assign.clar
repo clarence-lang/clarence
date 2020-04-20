@@ -1,0 +1,1 @@
+(= bunny "cute rabbit")
