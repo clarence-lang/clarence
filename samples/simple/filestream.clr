@@ -1,3 +1,0 @@
-(ns files.loadedfile)
-(def loaded true)
-;   using ns (namespace) to load defined files.
