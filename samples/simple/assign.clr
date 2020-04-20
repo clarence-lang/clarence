@@ -1,3 +1,0 @@
-(ns clr.assign)
-(def myVar "Hello from myVar!")
-  (println myVar)  
