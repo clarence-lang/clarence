@@ -93,11 +93,22 @@ $ clar <PATH/TO/yourfile.clar>
 eg.:
 
 ```bash
-$ clar hello.clar
+$ cat mul.clar # shows file content # needs cat installed
+-----------------------------------------------------
+(mac makeReduce name operator
+  `(def ,name ...args
+    (if (isnt args.length 0)
+        (args.reduce {,operator #0 #1}))))
+
+(makeReduce mul *)
+(mul 2 2)
+----------------------------------------------------
+$ clar mul.clar # executes the file
 
 Result:
-String: Hello, World!
+Integer: 4
 undefined
+
 ```
 
 ---
