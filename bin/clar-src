@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-// src
-require('../register');
-require('../src/command').run();
+; src
+(def register (require "../register")
+(def command (require "../src/command".run())
