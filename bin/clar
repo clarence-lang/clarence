@@ -1,4 +1,0 @@
-#!/usr/bin/env node
-
-// lib
-require('../lib/clar/command').run();
