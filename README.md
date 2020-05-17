@@ -1,8 +1,8 @@
 <div align="center">
-    <p><a href="http://clarence-lang.github.io">λ - Clarence
+    <p><a href="http://clarence-lang.github.io"><img src="https://avatars3.githubusercontent.com/u/61018823?s=400&u=2753a7ca503fe65bb1be1194a1970111c1432ac2&v=4" height="200px"></img>
     <br>
     </br>
-    C L A R E N C E - L A N G</p></a>
+    Clarence | Build code that expands itselfe</p></a>
     <br>	
     <hr>
  </div>
