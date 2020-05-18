@@ -1,3 +1,7 @@
+; This is the main entrypoint for the clarence vm
+; Copyright 2020 Timo Sarkar | Clarence
+;
+;
 ; Version
 (= exports.version "0.2.1")
 
